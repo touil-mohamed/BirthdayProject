@@ -1,0 +1,19 @@
+{
+  "name": "birthday",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "starr": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/touil-mohamed/BirthdayProject.git"
+  },
+  "author": "Touil Mohammed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/touil-mohamed/BirthdayProject/issues"
+  },
+  "homepage": "https://github.com/touil-mohamed/BirthdayProject#readme"
+}

@@ -1,0 +1,8 @@
+# Ignorer le fichier .env
+.env
+
+# Ignorer le répertoire node_modules
+node_modules/
+
+# Ignore le .DS_Store
+.DS_Store
