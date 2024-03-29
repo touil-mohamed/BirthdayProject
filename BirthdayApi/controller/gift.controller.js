@@ -1,5 +1,4 @@
 const giftListServices = require("../services/giftList.services");
-const giftServices = require("../services/gift.services");
 const url = require("url");
 
 // Utiliser une fonction d'analyse pour le corps JSON
