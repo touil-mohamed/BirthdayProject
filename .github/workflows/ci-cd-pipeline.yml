@@ -1,0 +1,66 @@
+name: Full Stack CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend:
+    name: Backend CI/CD
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./BirthdayApi
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14'
+
+    - name: Install Backend Dependencies
+      run: npm install
+
+    - name: Run Backend Lint
+      run: npm run lint
+
+    # - name: Run Backend Tests
+    #   run: npm test
+
+    # - name: Check for vulnerabilities in Backend Dependencies
+    #   run: npm audit
+
+    # Add additional backend steps as needed (Docker image build, security scans, etc.)
+
+  # frontend:
+  #   name: Frontend CI/CD
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: ./front_end
+  #   steps:
+  #   - uses: actions/checkout@v2
+
+  #   - name: Setup Node.js
+  #     uses: actions/setup-node@v1
+  #     with:
+  #       node-version: '14'
+
+  #   - name: Install Frontend Dependencies
+  #     run: npm install
+
+  #   - name: Run Frontend Lint
+  #     run: npm run lint
+
+  #   - name: Run Frontend Tests
+  #     run: npm test
+
+  #   - name: Build Frontend
+  #     run: npm run build
+
+  #   Add additional frontend steps as needed (deployment, etc.)
+
+  # Add additional jobs for Docker checks, secret scanning, etc.
