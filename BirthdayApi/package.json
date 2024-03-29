@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "starr": "node index.js"
+    "start": "node index.js",
+    "lint": "eslint . --ext .js"
+
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/touil-mohamed/BirthdayProject/issues"
   },
-  "homepage": "https://github.com/touil-mohamed/BirthdayProject#readme"
+  "homepage": "https://github.com/touil-mohamed/BirthdayProject#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.9.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
 }

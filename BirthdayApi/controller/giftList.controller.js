@@ -1,4 +1,4 @@
-const giftServices = require("../services/gift.services");
+const giftListServices = require("../services/giftList.services");
 const url = require("url");
 
 // Utiliser une fonction d'analyse pour le corps JSON
@@ -19,33 +19,33 @@ const parseJsonBody = (req, callback) => {
   });
 };
 
-async function getAllGift(req, res) {
+async function getAllGiftList(req, res) {
   try {
-    const allGift = await giftServices.getAllGifts();
+    const allGiftsList = await giftListServices.getAllGiftLists();
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(allGift));
+    res.end(JSON.stringify(allGiftsList));
   } catch (error) {
-    console.error("Error in getAllGift:", error);
+    console.error("Error in getAllGiftLists:", error);
     res.writeHead(500, { "Content-Type": "text/plain" });
     res.end("Internal Server Error");
   }
 }
 
-async function getGiftById(req, res) {
+async function getGiftListById(req, res) {
   try {
     const listId = url.parse(req.url, true).pathname.split("/").pop(); // Récupère le dernier segment de l'URL
-    const gift = await giftServices.getGiftById(listId);
+    const giftList = await giftListServices.getGiftListsById(listId);
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(gift));
+    res.end(JSON.stringify(giftList));
   } catch (error) {
-    console.error("Error in getGiftById:", error);
+    console.error("Error in giftListById:", error);
     res.writeHead(500, { "Content-Type": "text/plain" });
     res.end("Internal Server Error");
   }
 }
 
-async function createGift(req, res) {
-  parseJsonBody(req, async (error, newGift) => {
+async function createGiftList(req, res) {
+  parseJsonBody(req, async (error, newGiftList) => {
     if (error) {
       console.error("Error parsing JSON:", error);
       res.writeHead(400, { "Content-Type": "text/plain" });
@@ -54,18 +54,18 @@ async function createGift(req, res) {
     }
 
     try {
-      const createdGift = await giftServices.createGiftList(newGift);
+      const createdGiftList = await giftListServices.createGiftList(newGiftList);
       res.writeHead(201, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(createdGift));
+      res.end(JSON.stringify(createdGiftList));
     } catch (error) {
-      console.error("Error in createGift:", error);
+      console.error("Error in createdGiftList:", error);
       res.writeHead(500, { "Content-Type": "text/plain" });
       res.end("Internal Server Error");
     }
   });
 }
 
-async function updateGift(req, res) {
+async function updateGiftList(req, res) {
   const listId = url.parse(req.url, true).pathname.split("/").pop();
   parseJsonBody(req, async (error, updateData) => {
     if (error) {
@@ -76,21 +76,21 @@ async function updateGift(req, res) {
     }
 
     try {
-      const updatedGift = await giftServices.updateGift(listId, updateData);
+      const updatedGiftList = await giftListServices.updateGiftList(listId, updateData);
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(updatedGift));
+      res.end(JSON.stringify(updatedGiftList));
     } catch (error) {
-      console.error("Error in updatedGift:", error);
-      res.writeHead(error.message === "Gift  not found" ? 404 : 500, { "Content-Type": "text/plain" });
+      console.error("Error in updatedGiftList:", error);
+      res.writeHead(error.message === "Gift List  not found" ? 404 : 500, { "Content-Type": "text/plain" });
       res.end(error.message);
     }
   });
 }
 
-async function deleteGift(req, res) {
+async function deleteGiftList(req, res) {
   const listId = url.parse(req.url, true).pathname.split("/").pop();
   try {
-    await giftServices.deleteGift(listId);
+    await giftListServices.deleteGiftList(listId);
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("Gift list deleted successfully");
   } catch (error) {
@@ -100,25 +100,11 @@ async function deleteGift(req, res) {
   }
 }
 
-async function getGiftsByListId(req, res) {
-  try {
-    const listId = url.parse(req.url, true).pathname.split("/").pop();
-    const giftByList = await giftServices.getGiftsByListId(listId);
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(giftByList));
-  } catch (error) {
-    console.error("Error in GiftsByListId:", error);
-    res.writeHead(error.message === "Gift by List not found" ? 404 : 500, { "Content-Type": "text/plain" });
-    res.end(error.message);
-  }
-}
-
 
 module.exports = {
-  getAllGift,
-  getGiftById,
-  createGift,
-  updateGift,
-  deleteGift,
-  getGiftsByListId
+  getAllGiftList,
+  getGiftListById,
+  createGiftList,
+  updateGiftList,
+  deleteGiftList,
 };
