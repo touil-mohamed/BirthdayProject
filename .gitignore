@@ -6,3 +6,6 @@ node_modules/
 
 # Ignore le .DS_Store
 .DS_Store
+
+# Ignore le coverage
+coverage/
