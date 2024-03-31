@@ -35,6 +35,9 @@ jobs:
 
     - name: Run Commitlint
       run: npm run commitlint
+
+    - name: Run Audit
+      run: npm run audit
     
     
 
