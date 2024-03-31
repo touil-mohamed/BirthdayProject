@@ -1,33 +1,15 @@
 const giftListServices = require("../services/giftList.services");
 const url = require("url");
 
-// Utiliser une fonction d'analyse pour le corps JSON
-const parseJsonBody = (req, callback) => {
-  let body = "";
-
-  req.on("data", (chunk) => {
-    body += chunk;
-  });
-
-  req.on("end", () => {
-    try {
-      const json = JSON.parse(body);
-      callback(null, json);
-    } catch (error) {
-      callback(error, null);
-    }
-  });
-};
 
 async function getAllGiftList(req, res) {
   try {
     const allGiftsList = await giftListServices.getAllGiftLists();
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(allGiftsList));
+    res.send(allGiftsList);
   } catch (error) {
     console.error("Error in getAllGiftLists:", error);
     res.writeHead(500, { "Content-Type": "text/plain" });
-    res.end("Internal Server Error");
+    res.send("Internal Server Error");
   }
 }
 
@@ -35,8 +17,7 @@ async function getGiftListById(req, res) {
   try {
     const listId = url.parse(req.url, true).pathname.split("/").pop(); // Récupère le dernier segment de l'URL
     const giftList = await giftListServices.getGiftListsById(listId);
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(giftList));
+    res.send(giftList);
   } catch (error) {
     console.error("Error in giftListById:", error);
     res.writeHead(500, { "Content-Type": "text/plain" });
@@ -45,58 +26,41 @@ async function getGiftListById(req, res) {
 }
 
 async function createGiftList(req, res) {
-  parseJsonBody(req, async (error, newGiftList) => {
-    if (error) {
-      console.error("Error parsing JSON:", error);
-      res.writeHead(400, { "Content-Type": "text/plain" });
-      res.end("Bad Request");
-      return;
-    }
-
+  
     try {
+      const newGiftList = req.body;
       const createdGiftList = await giftListServices.createGiftList(newGiftList);
-      res.writeHead(201, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(createdGiftList));
+      res.send(createdGiftList);
     } catch (error) {
       console.error("Error in createdGiftList:", error);
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.send("Internal Server Error");
     }
-  });
 }
 
 async function updateGiftList(req, res) {
   const listId = url.parse(req.url, true).pathname.split("/").pop();
-  parseJsonBody(req, async (error, updateData) => {
-    if (error) {
-      console.error("Error parsing JSON:", error);
-      res.writeHead(400, { "Content-Type": "text/plain" });
-      res.end("Bad Request");
-      return;
-    }
-
+    
     try {
+      const updateData = req.body;
       const updatedGiftList = await giftListServices.updateGiftList(listId, updateData);
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(updatedGiftList));
+      res.send(JSON.stringify(updatedGiftList));
     } catch (error) {
       console.error("Error in updatedGiftList:", error);
       res.writeHead(error.message === "Gift List  not found" ? 404 : 500, { "Content-Type": "text/plain" });
-      res.end(error.message);
+      res.send(error.message);
     }
-  });
 }
 
 async function deleteGiftList(req, res) {
   const listId = url.parse(req.url, true).pathname.split("/").pop();
   try {
     await giftListServices.deleteGiftList(listId);
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("Gift list deleted successfully");
+    res.send("Gift list deleted successfully");
   } catch (error) {
     console.error("Error in deleteGift:", error);
     res.writeHead(error.message === "Gift not found" ? 404 : 500, { "Content-Type": "text/plain" });
-    res.end(error.message);
+    res.send(error.message);
   }
 }
 
