@@ -27,39 +27,47 @@ jobs:
     - name: Run Backend Lint
       run: npm run lint
 
-    # - name: Run Backend Tests
-    #   run: npm test
+    - name: Run Backend Tests
+      run: npm test
+
+    - name: Run Husky Git Hooks
+      run: npm run prepare
+
+    - name: Run Commitlint
+      run: npm run commitlint
+    
+    
 
     # - name: Check for vulnerabilities in Backend Dependencies
     #   run: npm audit
 
     # Add additional backend steps as needed (Docker image build, security scans, etc.)
 
-  # frontend:
-  #   name: Frontend CI/CD
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: ./front_end
-  #   steps:
-  #   - uses: actions/checkout@v2
+  frontend:
+    name: Frontend CI/CD
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front_end
+    steps:
+    - uses: actions/checkout@v2
 
-  #   - name: Setup Node.js
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: '14'
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14'
 
-  #   - name: Install Frontend Dependencies
-  #     run: npm install
+    - name: Install Frontend Dependencies
+      run: npm install
 
-  #   - name: Run Frontend Lint
-  #     run: npm run lint
+    - name: Run Frontend Lint
+      run: npm run lint
 
-  #   - name: Run Frontend Tests
-  #     run: npm test
+    #- name: Run Frontend Tests
+    #  run: npm test
 
-  #   - name: Build Frontend
-  #     run: npm run build
+    # - name: Build Frontend
+    #   run: npm run build
 
   #   Add additional frontend steps as needed (deployment, etc.)
 
