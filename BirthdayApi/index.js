@@ -19,8 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/Gifts", giftRoute.routes);
 
-//app.use("/GiftsList", giftListRoute.routes);
+app.use("/GiftsList", giftListRoute.routes);
 
 app.listen(3001, () => {
   console.log("Server listening on http://localhost:3001");
 });
+
+module.exports = { app };

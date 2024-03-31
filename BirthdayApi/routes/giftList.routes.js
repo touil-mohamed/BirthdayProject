@@ -6,6 +6,9 @@ const routes = express();
 routes.get("",function(req,res){
   giftListController.getAllGiftList(req,res);
 });
+routes.get("/active",function(req,res){
+  giftListController.getActiveGiftLists(req,res);
+});
 routes.get("/:id",function(req,res){
   giftListController.getGiftListById(req,res);
 });

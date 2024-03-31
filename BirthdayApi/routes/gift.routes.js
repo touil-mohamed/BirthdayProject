@@ -17,6 +17,12 @@ routes.post("/create",function(req,res){
 routes.patch("/update/:id",function(req,res){
   giftController.updateGift(req,res);
 });
+routes.patch("/reserved/:id",function(req,res){
+  giftController.reserveGift(req,res);
+});
+routes.delete("/:id",function(req,res){
+  giftController.deleteGift(req,res);
+});
 module.exports = {
   routes,
 };

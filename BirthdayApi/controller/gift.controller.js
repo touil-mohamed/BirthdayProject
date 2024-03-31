@@ -8,8 +8,11 @@ async function getAllGift(req, res) {
       gift: allGift});
   } catch (error) {
     console.error("Error in getAllGift:", error);
-    res.writeHead(500, { "Content-Type": "text/plain" });
-    res.send("Internal Server Error");
+    if (error.message === "Gift not found") {
+      res.status(404).send("Gift not found");
+    } else {
+      res.status(500).send("Internal server error");
+    }
   }
 }
 
@@ -17,11 +20,15 @@ async function getGiftById(req, res) {
   try {
     const listId = url.parse(req.url, true).pathname.split("/").pop(); // Récupère le dernier segment de l'URL
     const gift = await giftServices.getGiftById(listId);
-    res.send(gift);
+    res.send({
+      gift: gift});
   } catch (error) {
     console.error("Error in getGiftById:", error);
-    res.writeHead(500, { "Content-Type": "text/plain" });
-    res.send("Internal Server Error");
+    if (error.message === "Gift not found") {
+      res.status(404).send("Gift not found");
+    } else {
+      res.status(500).send("Internal server error");
+    }
   }
 }
 
@@ -33,8 +40,11 @@ async function createGift(req, res) {
       res.send(createdGift);
     } catch (error) {
       console.error("Error in createGift:", error);
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.send("Internal Server Error");
+      if (error.message === "Gift not found") {
+        res.status(404).send("Gift not found");
+      } else {
+        res.status(500).send("Internal server error");
+      }
     }
 }
 
@@ -46,10 +56,14 @@ async function updateGift(req, res) {
       res.send(updatedGift);
     } catch (error) {
       console.error("Error in updatedGift:", error);
-      res.writeHead(error.message === "Gift  not found" ? 404 : 500, { "Content-Type": "text/plain" });
-      res.send(error.message);
+      if (error.message === "Gift not found") {
+        res.status(404).send("Gift not found");
+      } else {
+        res.status(500).send("Internal server error");
+      }
     }
 }
+
 
 async function deleteGift(req, res) {
   const listId = url.parse(req.url, true).pathname.split("/").pop();
@@ -58,20 +72,51 @@ async function deleteGift(req, res) {
     res.send("Gift list deleted successfully");
   } catch (error) {
     console.error("Error in deleteGift:", error);
-    res.writeHead(error.message === "Gift not found" ? 404 : 500, { "Content-Type": "text/plain" });
-    res.send(error.message);
+    if (error.message === "Gift not found") {
+      res.status(404).send("Gift not found");
+    } else {
+      res.status(500).send("Internal server error");
+    }
   }
 }
+
+
 
 async function getGiftsByListId(req, res) {
   try {
     const listId = url.parse(req.url, true).pathname.split("/").pop();
     const giftByList = await giftServices.getGiftsByListId(listId);
-    res.send(giftByList);
+    res.send({
+      gift: giftByList});
   } catch (error) {
     console.error("Error in GiftsByListId:", error);
-    res.writeHead(error.message === "Gift by List not found" ? 404 : 500, { "Content-Type": "text/plain" });
-    res.send(error.message);
+    if (error.message === "Gift not found") {
+      res.status(404).send("List Gift not found");
+    } else {
+      res.status(500).send("Internal server error");
+    }
+  }
+}
+
+async function reserveGift(req, res) {
+  const giftId = url.parse(req.url, true).pathname.split("/").pop();
+  const { reserved } = req.body;
+
+  // Vérifier si la réservation est spécifiée
+  if (reserved === undefined || reserved === null) {
+    res.status(400).send("La réservation du cadeau doit être spécifiée.");
+    return;
+  }
+
+  try {
+    // Réserver ou annuler la réservation du cadeau en fonction de la valeur de 'reserved'
+    const updatedGift = await giftServices.reserveGift(giftId, reserved);
+    res.send({
+      gift : updatedGift
+    });
+  } catch (error) {
+    console.error("Error in reserveGift:", error);
+    res.status(error.message === "Gift not found" ? 404 : 500).send(error.message);
   }
 }
 
@@ -82,5 +127,6 @@ module.exports = {
   createGift,
   updateGift,
   deleteGift,
-  getGiftsByListId
+  getGiftsByListId,
+  reserveGift
 };

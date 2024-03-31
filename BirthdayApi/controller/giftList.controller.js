@@ -5,7 +5,7 @@ const url = require("url");
 async function getAllGiftList(req, res) {
   try {
     const allGiftsList = await giftListServices.getAllGiftLists();
-    res.send(allGiftsList);
+    res.send({giftList: allGiftsList});
   } catch (error) {
     console.error("Error in getAllGiftLists:", error);
     res.writeHead(500, { "Content-Type": "text/plain" });
@@ -29,6 +29,12 @@ async function createGiftList(req, res) {
   
     try {
       const newGiftList = req.body;
+      // Convertir la valeur de la case à cocher en un entier (0 ou 1)
+      const reservedValue = newGiftList.reserved === 'on' ? 1 : 0;
+
+      // Mettre à jour la valeur de reserved dans l'objet newGiftList
+      newGiftList.reserved = reservedValue;
+
       const createdGiftList = await giftListServices.createGiftList(newGiftList);
       res.send(createdGiftList);
     } catch (error) {
@@ -64,6 +70,20 @@ async function deleteGiftList(req, res) {
   }
 }
 
+async function getActiveGiftLists(req, res) {
+  try {
+    const giftActive = await giftListServices.getActiveGiftLists();
+    res.send({
+      giftList : giftActive
+    });
+  } catch (error) {
+    console.error("Error in ActiveGiftLists:", error);
+    res.writeHead(500, { "Content-Type": "text/plain" });
+    res.end("Internal Server Error");
+    
+  }
+}
+
 
 module.exports = {
   getAllGiftList,
@@ -71,4 +91,5 @@ module.exports = {
   createGiftList,
   updateGiftList,
   deleteGiftList,
+  getActiveGiftLists
 };
