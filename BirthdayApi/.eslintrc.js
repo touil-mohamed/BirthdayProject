@@ -6,7 +6,7 @@ module.exports = {
         'es2021': true,
         node:true
     },
-    'extends': 'eslint:recommended',
+    'extends': ['eslint:recommended','plugin:jest/recommended'],
     'overrides': [
         {
             'env': {
@@ -27,5 +27,6 @@ module.exports = {
         'no-unused-vars': 'warn',
         'eqeqeq': 'error',
         'semi': ['error', 'always'],
-    }
+    },
+    plugins: ['jest'],
 };
