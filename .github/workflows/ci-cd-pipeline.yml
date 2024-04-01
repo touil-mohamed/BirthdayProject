@@ -2,9 +2,9 @@ name: Full Stack CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
   backend:
@@ -27,60 +27,52 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Utiliser les variables d'environnement
-      run: |
-          echo "Hôte de la base de données : $DB_HOST"
-          echo "Nom d'utilisateur de la base de données : $DB_USER"
-          echo "Mot de passe de la base de données : $DB_PASSWORD"
-          echo "Port de la base de données : $DB_PORT"
-          echo "Nom de la base de données : $DB_DATABASE"
+    - name: Install Backend Dependencies
+      run: npm install
 
-  #   - name: Install Backend Dependencies
-  #     run: npm install
+    - name: Run Backend Lint
+      run: npm run lint
 
-  #   - name: Run Backend Lint
-  #     run: npm run lint
+    - name: Run Backend Tests
+      run: npm test
 
-  #   - name: Run Backend Tests
-  #     run: npm test
+    - name: Run Husky Git Hooks
+      run: npm run prepare
 
-  #   - name: Run Husky Git Hooks
-  #     run: npm run prepare
+    - name: Run Commitlint
+      run: npm run commitlint
 
-  #   - name: Run Commitlint
-  #     run: npm run commitlint
-
-  #   - name: Run Audit
-  #     run: npm run audit
+    - name: Run Audit
+      run: npm run audit
     
     
 
-  #   # - name: Check for vulnerabilities in Backend Dependencies
-  #   #   run: npm audit
+    # - name: Check for vulnerabilities in Backend Dependencies
+    #   run: npm audit
 
-  #   # Add additional backend steps as needed (Docker image build, security scans, etc.)
+    # Add additional backend steps as needed (Docker image build, security scans, etc.)
 
-  # frontend:
-  #   name: Frontend CI/CD
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: ./front_end
-  #   steps:
-  #   - uses: actions/checkout@v2
+  frontend:
+    name: Frontend CI/CD
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front_end
+    steps:
+    - uses: actions/checkout@v2
 
-  #   - name: Setup Node.js
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: '14'
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14'
 
-  #   - name: Install Frontend Dependencies
-  #     run: npm install
+    - name: Install Frontend Dependencies
+      run: npm install
 
-  #   - name: Run Frontend Lint
-  #     run: npm run lint
+    - name: Run Frontend Lint
+      run: npm run lint
 
-    #- name: Run Frontend Tests
+    # - name: Run Frontend Tests
     #  run: npm test
 
     # - name: Build Frontend
