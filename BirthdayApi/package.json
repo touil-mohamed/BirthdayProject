@@ -9,7 +9,7 @@
     "test": "jest",
     "audit": "npm audit",
     "prepare": "husky install",
-    "commitlint": "commitlint -E HUSKY_GIT_PARAMS"
+    "commitlint": "commitlint -e HUSKY_GIT_PARAMS"
   },
   "repository": {
     "type": "git",
@@ -38,10 +38,11 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -e HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
     "*": "commitlint -E HUSKY_GIT_PARAMS"
   }
+  
 }

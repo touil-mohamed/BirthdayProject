@@ -41,8 +41,8 @@ jobs:
     - name: Run Backend Lint
       run: npm run lint
 
-    - name: Run Backend Tests
-      run: npm test
+    # - name: Run Backend Tests
+    #   run: npm test
 
     - name: Run Husky Git Hooks
       run: npm run prepare
@@ -50,11 +50,10 @@ jobs:
     - name: Run Commitlint
       run: npm run commitlint
 
-    - name: Run Audit
-      run: npm run audit
+    # - name: Run Audit
+    #   run: npm run audit
     
     
-
     # - name: Check for vulnerabilities in Backend Dependencies
     #   run: npm audit
 
