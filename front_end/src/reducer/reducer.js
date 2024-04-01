@@ -6,6 +6,7 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
+  const updatedGifts = state.gifts.filter(gift => gift.id !== action.payload);
   switch (action.type) {
       case "Request":
           return { ...state, loading: true, error: null };
@@ -32,6 +33,12 @@ const reducer = (state, action) => {
               ...state,
               loading: false,
               error: action.payload,
+          };
+      case "deleteGift":
+          // Supprimer le cadeau de la liste des cadeaux
+          return {
+              ...state,
+              gifts: updatedGifts,
           };
       default:
           return state;

@@ -57,6 +57,18 @@ async function createGiftList(newGiftList) {
   }
 }
 
+async function getActiveGiftLists() {
+  const connection = await createDatabaseConnection();
+  try {
+    const [rows] = await connection.query(
+      'SELECT * FROM gift_lists WHERE is_active = true'
+    );
+    return rows;
+  } finally {
+    await connection.end();
+  }
+}
+
 async function updateGiftList(listId, updateData) {
   const connection = await createDatabaseConnection();
   try {
@@ -94,5 +106,6 @@ module.exports = {
   createGiftList,
   updateGiftList,
   deleteGiftList,
-  getGiftListsById
+  getGiftListsById,
+  getActiveGiftLists
 };

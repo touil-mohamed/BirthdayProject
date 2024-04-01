@@ -69,6 +69,23 @@ async function updateGift(giftId, updateData) {
   }
 }
 
+async function reserveGift(giftId) {
+  const connection = await createDatabaseConnection();
+  try {
+    // Mettre à jour la base de données pour marquer le cadeau comme réservé
+    const [result] = await connection.query(
+      'UPDATE gift SET reserved = true WHERE id = ?',
+      [giftId]
+    );
+    if (result.affectedRows === 0) {
+      throw new Error('Gift not found'); // Si aucun cadeau n'est affecté par la mise à jour, lance une erreur
+    }
+    return { message: 'Gift reserved successfully' };
+  } finally {
+    await connection.end();
+  }
+}
+
 // Supprime un cadeau
 async function deleteGift(giftId) {
   const connection = await createDatabaseConnection();
@@ -100,5 +117,6 @@ module.exports = {
   createGift,
   updateGift,
   deleteGift,
-  getGiftsByListId,  
+  getGiftsByListId,
+  reserveGift  
 };

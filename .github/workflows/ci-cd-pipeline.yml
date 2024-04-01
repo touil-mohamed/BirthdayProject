@@ -2,24 +2,38 @@ name: Full Stack CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
   backend:
     name: Backend CI/CD
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ vars.DB_PASSWORD }}
+          MYSQL_DATABASE: ${{ vars.DB_DATABASE }}
+        ports:
+          - 8889:8889
     defaults:
       run:
         working-directory: ./BirthdayApi
+    env:
+       DB_HOST: ${{ vars.DB_HOST }}
+       DB_USER: ${{ vars.DB_USER }}
+       DB_PASSWORD: ${{ vars.DB_PASSWORD }}
+       DB_PORT: ${{ vars.DB_PORT }}
+       DB_DATABASE: ${{ vars.DB_DATABASE }}
     steps:
     - uses: actions/checkout@v2
 
     - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '14'
+        node-version: '18'
 
     - name: Install Backend Dependencies
       run: npm install
@@ -30,36 +44,46 @@ jobs:
     # - name: Run Backend Tests
     #   run: npm test
 
+    - name: Run Husky Git Hooks
+      run: npm run prepare
+
+    - name: Run Commitlint
+      run: npm run commitlint
+
+    # - name: Run Audit
+    #   run: npm run audit
+    
+    
     # - name: Check for vulnerabilities in Backend Dependencies
     #   run: npm audit
 
     # Add additional backend steps as needed (Docker image build, security scans, etc.)
 
-  # frontend:
-  #   name: Frontend CI/CD
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: ./front_end
-  #   steps:
-  #   - uses: actions/checkout@v2
+  frontend:
+    name: Frontend CI/CD
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front_end
+    steps:
+    - uses: actions/checkout@v2
 
-  #   - name: Setup Node.js
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: '14'
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14'
 
-  #   - name: Install Frontend Dependencies
-  #     run: npm install
+    - name: Install Frontend Dependencies
+      run: npm install
 
-  #   - name: Run Frontend Lint
-  #     run: npm run lint
+    - name: Run Frontend Lint
+      run: npm run lint
 
-  #   - name: Run Frontend Tests
-  #     run: npm test
+    # - name: Run Frontend Tests
+    #  run: npm test
 
-  #   - name: Build Frontend
-  #     run: npm run build
+    # - name: Build Frontend
+    #   run: npm run build
 
   #   Add additional frontend steps as needed (deployment, etc.)
 

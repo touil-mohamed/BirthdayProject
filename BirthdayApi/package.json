@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "lint": "eslint . --ext .js"
+    "lint": "eslint . --ext .js",
+    "test": "jest",
+    "audit": "npm audit",
+    "prepare": "husky install",
+    "commitlint": "commitlint -e HUSKY_GIT_PARAMS"
   },
   "repository": {
     "type": "git",
@@ -24,6 +28,21 @@
     "mysql2": "^3.9.3"
   },
   "devDependencies": {
-    "eslint": "^8.57.0"
+    "@commitlint/cli": "^19.2.1",
+    "@commitlint/config-conventional": "^19.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-jest": "^27.9.0",
+    "husky": "^9.0.11",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*": "commitlint -E HUSKY_GIT_PARAMS"
   }
+  
 }
