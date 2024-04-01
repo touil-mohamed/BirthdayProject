@@ -10,6 +10,14 @@ jobs:
   backend:
     name: Backend CI/CD
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ vars.DB_PASSWORD }}
+          MYSQL_DATABASE: ${{ vars.DB_DATABASE }}
+        ports:
+          - 8889:8889
     defaults:
       run:
         working-directory: ./BirthdayApi
