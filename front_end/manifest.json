@@ -1,0 +1,27 @@
+{
+  "name": "Birhtday",
+  "short_name": "Birt",
+  "start_url": "./index.html",
+  "display": "minimal-ui",
+  "background_color": "#96c93d",
+  "theme_color": "#96c93d",
+  "orientation": "portrait",
+  "shortcuts": [
+    {
+      "name": "Birhtday",
+      "url": "./index.html"
+    }
+  ],
+  "icons": [
+    {
+      "src": "images/birthday.png",
+      "type": "image/png",
+      "sizes": "192x192 512x512"
+    },
+    {
+      "src": "images/birthday.svg",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
