@@ -25,7 +25,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mysql2": "^3.9.3"
+    "mysql2": "^3.9.3",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.2.1",
@@ -44,5 +45,4 @@
   "lint-staged": {
     "*": "commitlint -E HUSKY_GIT_PARAMS"
   }
-  
 }
